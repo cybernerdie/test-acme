@@ -35,7 +35,7 @@ The total is calculated as:
 TOTAL = (SUBTOTAL - DISCOUNT) + DELIVERY CHARGE
 ```
 
-## 🎯 Assumptions  
+## Assumptions  
 ✅ No enums are used to pass data between components.  
 ✅ No database or models are involved — data is managed in memory.  
 ✅ The `Money` class is used for handling prices and calculations.  
