@@ -1,10 +1,10 @@
 <?php
 
-namespace AcmeWidgetCo\Models;
+namespace AcmeWidgetCo\DTOs;
 
 use Money\Money;
 
-class Product
+class ProductDTO
 {
     public function __construct(
         private string $code,
@@ -25,5 +25,17 @@ class Product
     public function getPrice(): Money
     {
         return $this->price;
+    }
+
+    /**
+     * @return array{code: string, name: string, price: numeric-string}
+     */
+    public function toArray(): array
+    {
+        return [
+            'code' => $this->getCode(),
+            'name' => $this->getName(),
+            'price' => $this->getPrice()->getAmount(),
+        ];
     }
 }

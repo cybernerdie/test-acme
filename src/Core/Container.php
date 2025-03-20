@@ -1,6 +1,6 @@
 <?php
 
-namespace AcmeWidgetCo;
+namespace AcmeWidgetCo\Core;
 
 use Exception;
 use ReflectionClass;

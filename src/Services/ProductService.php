@@ -3,8 +3,8 @@
 namespace AcmeWidgetCo\Services;
 
 use Money\Money;
-use AcmeWidgetCo\Models\Product;
-use AcmeWidgetCo\ProductCollection;
+use AcmeWidgetCo\DTOs\ProductDTO;
+use AcmeWidgetCo\Core\ProductCollection;
 
 class ProductService
 {
@@ -16,9 +16,9 @@ class ProductService
     public function getProducts(): ProductCollection
     {
         return new ProductCollection([
-            new Product('R01', 'Red Widget', Money::USD(3295)), // $32.95
-            new Product('G01', 'Green Widget', Money::USD(2495)), // $24.95
-            new Product('B01', 'Blue Widget', Money::USD(795)),  // $7.95
+            new ProductDTO('R01', 'Red Widget', Money::USD(3295)), // $32.95
+            new ProductDTO('G01', 'Green Widget', Money::USD(2495)), // $24.95
+            new ProductDTO('B01', 'Blue Widget', Money::USD(795)),  // $7.95
         ]);
     }
 
@@ -28,10 +28,10 @@ class ProductService
      * @param string $productCode
      * @return Product|null
      */
-    public function findByCode(string $productCode): ?Product
+    public function findByCode(string $productCode): ?ProductDTO
     {
         return $this->getProducts()
-            ->filter(fn (Product $product) => $product->getCode() === $productCode)
+            ->filter(fn (ProductDTO $product) => $product->getCode() === $productCode)
             ->first();
     }
 }

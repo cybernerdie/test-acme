@@ -1,18 +1,17 @@
 <?php
 
-namespace AcmeWidgetCo\Actions;
+namespace AcmeWidgetCo\Repositories;
 
-use AcmeWidgetCo\Enums\OfferTypeEnum;
+use AcmeWidgetCo\Contracts\SpecialOfferRepositoryInterface;
 use AcmeWidgetCo\DTOs\SpecialOfferDTO;
+use AcmeWidgetCo\Enums\OfferTypeEnum;
 
-class GetActiveSpecialOffersAction
+class SpecialOfferRepository implements SpecialOfferRepositoryInterface
 {
     /**
-     * Returns all active special offers
-     * 
      * @return SpecialOfferDTO[]
      */
-    public function execute(): array
+    public function getActiveOffers(): array
     {
         return [
             new SpecialOfferDTO(

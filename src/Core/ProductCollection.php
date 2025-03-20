@@ -1,23 +1,23 @@
 <?php
 
-namespace AcmeWidgetCo;
+namespace AcmeWidgetCo\Core;
 
-use AcmeWidgetCo\Models\Product;
+use AcmeWidgetCo\DTOs\ProductDTO;
 
 class ProductCollection
 {
-    /** @var Product[] */
+    /** @var ProductDTO[] */
     private array $items = [];
 
     /**
-     * @param Product[] $items
+     * @param ProductDTO[] $items
      */
     public function __construct(array $items = [])
     {
         $this->items = $items;
     }
 
-    public function add(Product $product): void
+    public function add(ProductDTO $product): void
     {
         $this->items[] = $product;
     }
@@ -50,7 +50,7 @@ class ProductCollection
         return empty($this->items);
     }
 
-    public function first(): ?Product
+    public function first(): ?ProductDTO
     {
         return $this->items[0] ?? null;
     }

@@ -18,6 +18,10 @@
             "AcmeWidgetCo\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "analyze": "vendor/bin/phpstan analyse"
+    },
     "authors": [
         {
             "name": "Joshua Paul"

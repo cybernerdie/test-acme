@@ -1,6 +1,6 @@
 <?php
 
-use AcmeWidgetCo\Container;
+use AcmeWidgetCo\Core\Container;
 
 if (!function_exists('resolve')) {
     /**

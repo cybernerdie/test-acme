@@ -1,10 +1,10 @@
 <?php
 
-namespace AcmeWidgetCo\Rules;
+namespace AcmeWidgetCo\DTOs;
 
 use Money\Money;
 
-class DeliveryChargeRule
+class DeliveryChargeDTO
 {
     public function __construct(
         private Money $threshold,

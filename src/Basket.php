@@ -2,24 +2,26 @@
 
 namespace AcmeWidgetCo;
 
-use AcmeWidgetCo\Actions\GetActiveSpecialOffersAction;
-use AcmeWidgetCo\Exceptions\ProductNotFoundException;
-use AcmeWidgetCo\Services\DeliveryChargeService;
-use AcmeWidgetCo\Services\ProductService;
-use AcmeWidgetCo\Services\SpecialOfferDiscountService;
 use Money\Money;
+use AcmeWidgetCo\Core\ProductCollection;
+use AcmeWidgetCo\Services\ProductService;
+use AcmeWidgetCo\Services\DeliveryChargeService;
+use AcmeWidgetCo\Exceptions\ProductNotFoundException;
+use AcmeWidgetCo\Repositories\SpecialOfferRepository;
+use AcmeWidgetCo\Services\SpecialOfferDiscountService;
 
 class Basket
 {
     public function __construct(
         private ProductCollection $products,
-        private DeliveryChargeService $deliveryChargeService,
 
-        private GetActiveSpecialOffersAction $getActiveSpecialOffersAction,
+        private DeliveryChargeService $deliveryChargeService,
 
         private SpecialOfferDiscountService $specialOfferDiscountService,
 
         private ProductService $productService,
+
+        private SpecialOfferRepository $specialOfferRepository
     ) {}
 
     public function add(string $productCode): void
@@ -49,18 +51,21 @@ class Basket
 
     private function calculateSubtotal(): Money
     {
-        $subtotal = Money::USD(0);
-
-        foreach ($this->products->getItems() as $product) {
-            $subtotal = $subtotal->add($product->getPrice());
+        if ($this->products->isEmpty()) {
+            return Money::USD(0);
         }
-
-        return $subtotal;
+    
+        return array_reduce(
+            $this->products->getItems(),
+            fn (Money $subtotal, $product) => $subtotal->add($product->getPrice()),
+            Money::USD(0)
+        );
     }
+    
 
     private function calculateDiscount(): Money
     {
-        $specialOffers = $this->getActiveSpecialOffersAction->execute();
+        $specialOffers = $this->specialOfferRepository->getActiveOffers();
 
         if (empty($specialOffers)) {
             return Money::USD(0);
