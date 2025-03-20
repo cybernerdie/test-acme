@@ -2,7 +2,7 @@
 # Basket Implementation  
 This project provides a `Basket` class that allows you to add products, apply special offers, calculate delivery charges, and compute the total cost.  
 
-## 🚀 How It Works  
+## How It Works  
 
 ### 1. Initialization  
 The `Basket` class is initialized with the following dependencies:  
@@ -33,28 +33,6 @@ $total = $basket->total();
 The total is calculated as:  
 ```ini
 TOTAL = (SUBTOTAL - DISCOUNT) + DELIVERY CHARGE
-```
-
-### 5. Subtotal Calculation  
-The subtotal is calculated using `array_reduce` on the product collection:  
-```php
-array_reduce(
-    $this->products->getItems(),
-    fn (Money $subtotal, $product) => $subtotal->add($product->getPrice()),
-    Money::USD(0)
-);
-```
-
-### 6. Discount Calculation  
-The discount is calculated by applying special offers to the products in the basket using the `SpecialOfferDiscountService`:  
-```php
-$this->specialOfferDiscountService->apply($this->products, $specialOffers);
-```
-
-### 7. Delivery Charge Calculation  
-The delivery charge is computed based on the total after applying discounts:  
-```php
-$this->deliveryChargeService->calculate($total);
 ```
 
 ## 🎯 Assumptions  
