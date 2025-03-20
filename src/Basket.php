@@ -2,38 +2,31 @@
 
 namespace AcmeWidgetCo;
 
-use Money\Money;
-use AcmeWidgetCo\Services\ProductService;
-use AcmeWidgetCo\Services\DeliveryChargeService;
-use AcmeWidgetCo\Exceptions\ProductNotFoundException;
 use AcmeWidgetCo\Actions\GetActiveSpecialOffersAction;
+use AcmeWidgetCo\Exceptions\ProductNotFoundException;
+use AcmeWidgetCo\Services\DeliveryChargeService;
+use AcmeWidgetCo\Services\ProductService;
 use AcmeWidgetCo\Services\SpecialOfferDiscountService;
+use Money\Money;
 
 class Basket
 {
-    private ProductCollection $products;
-    private DeliveryChargeService $deliveryChargeService;
-
-    private GetActiveSpecialOffersAction $getActiveSpecialOffersAction;
-
-    private SpecialOfferDiscountService $specialOfferDiscountService;
-
-    private ProductService $productService;
-
     public function __construct(
-    ) {
-        $this->products = new ProductCollection();
-        $this->deliveryChargeService = new DeliveryChargeService();
-        $this->getActiveSpecialOffersAction = new GetActiveSpecialOffersAction();
-        $this->specialOfferDiscountService = new SpecialOfferDiscountService();
-        $this->productService = new ProductService();
-    }
+        private ProductCollection $products,
+        private DeliveryChargeService $deliveryChargeService,
+
+        private GetActiveSpecialOffersAction $getActiveSpecialOffersAction,
+
+        private SpecialOfferDiscountService $specialOfferDiscountService,
+
+        private ProductService $productService,
+    ) {}
 
     public function add(string $productCode): void
     {
         $product = $this->productService->findByCode($productCode);
 
-        if (!$product) {
+        if (! $product) {
             throw new ProductNotFoundException($productCode);
         }
 
@@ -45,10 +38,10 @@ class Basket
         if ($this->products->isEmpty()) {
             return Money::USD(0);
         }
-        
-        $subtotal = $this->calculateSubtotal();
-        $discount = $this->calculateDiscount();
-        $total = $subtotal->subtract($discount);
+
+        $subtotal       = $this->calculateSubtotal();
+        $discount       = $this->calculateDiscount();
+        $total          = $subtotal->subtract($discount);
         $deliveryCharge = $this->deliveryChargeService->calculate($total);
 
         return $total->add($deliveryCharge);
